@@ -59,3 +59,8 @@ changes made to files under that path persists on your local storage. Any other 
 made inside the Docker container, e.g. installing additional packages or creating files
 outside of `/app`, will not persist across sessions unless you commit your changes
 to the Docker image.
+
+## Future Steps
+
+As previously stated, this is an old Caffe implementation. Zhang et al.'s work has been
+redesigned in PyTorch, so the natural next step is to implement that newer version.
