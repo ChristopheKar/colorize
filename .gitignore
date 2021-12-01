@@ -1,0 +1,6 @@
+# Ignore cache
+__pycache__
+*.pyc
+
+# Ignore model weights file
+model/colorization_release_v2.caffemodel
