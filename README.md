@@ -3,6 +3,9 @@
 This project aims to colorize grayscale images by applying the work done by Zhang et al.
 in their 2016 ECCV paper, [Colorful Image Colorization](https://arxiv.org/abs/1603.08511),
 which is beautifully implemented and showcased in this [repo](https://richzhang.github.io/colorization/).
+This project is also partly based on this excellent
+[tutorial](https://www.pyimagesearch.com/2019/02/25/black-and-white-image-colorization-with-opencv-and-deep-learning/)
+by Adrian Rosebrock on [pyimagesearch](https://www.pyimagesearch.com).
 
 Currently, this implementation is based on the old Caffe implementation available
 [here](https://github.com/richzhang/colorization/tree/caffe), so the model files can
@@ -64,3 +67,6 @@ to the Docker image.
 
 As previously stated, this is an old Caffe implementation. Zhang et al.'s work has been
 redesigned in PyTorch, so the natural next step is to implement that newer version.
+
+## Other References
+- [Let there be color!](http://iizuka.cs.tsukuba.ac.jp/projects/colorization/en/)
