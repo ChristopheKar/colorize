@@ -8,6 +8,10 @@ Currently, this implementation is based on the old Caffe implementation availabl
 [here](https://github.com/richzhang/colorization/tree/caffe), so the model files can
 be retrieved from there.
 
+**Lebanon, Jounieh, circa 1894 - Colorized**
+![Lebanon, Jounieh, circa 1894 - Colorized](/outputs/jounieh_1894.jpg)
+
+
 ## Quick Start
 Model files are provided in `model/`, but the main weights file can be retrieved using:
 ```bash
