@@ -3,4 +3,13 @@ __pycache__
 *.pyc
 
 # Ignore model weights file
-model/colorization_release_v2.caffemodel
+weights/*
+
+# Don't ignore Caffe files
+!weights/*.prototxt
+!weights/*.npy
+
+# Ignore data
+images/
+results/
+outputs/
