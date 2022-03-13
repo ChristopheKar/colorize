@@ -6,8 +6,9 @@ __pycache__
 weights/*
 
 # Don't ignore Caffe files
-!weights/*.prototxt
-!weights/*.npy
+!weights/caffe
+weights/caffe/*.caffemodel
+
 
 # Ignore data
 images/
