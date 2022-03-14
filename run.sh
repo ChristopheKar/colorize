@@ -3,6 +3,7 @@
 default_name="colorize"
 default_img="colorize"
 
+# Parse arguments
 while [[ "$#" -gt 0 ]]; do
     case $1 in
         -h|--help) help=1 ;;
@@ -38,8 +39,8 @@ if [ -z ${imgname+x} ]; then
     imgname=$default_img
 fi
 
-# Build image
-if [[ "$build" -eq 1 ]]; then
+# Build image if --build is specified or if it does not exist locally
+if [[ "$build" -eq 1 || $(docker inspect "$imgname" > /dev/null 2>&1) ]]; then
     echo "Building image..."
     docker build -t $imgname .
 fi
