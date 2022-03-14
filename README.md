@@ -85,7 +85,10 @@ By default, its entrypoint is the `colorize.py` script, so it can directly take 
 - [x] Zhang et al. ECCV16 PyTorch model
 - [x] Zhang et al. SIGGRAPH17 PyTorch model
 - [ ] GPU Support
+- [ ] Training support
 - [ ] Other colorizers?
 
-## Other References
+## References
+- Colorful Image Colorization [paper](https://arxiv.org/abs/1603.08511) [code](https://richzhang.github.io/colorization/)
+- [Black and white image colorization with OpenCV and Deep Learning, PyImageSearch](https://pyimagesearch.com/2019/02/25/black-and-white-image-colorization-with-opencv-and-deep-learning/)
 - [Let there be color!](http://iizuka.cs.tsukuba.ac.jp/projects/colorization/en/)
