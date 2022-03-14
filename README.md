@@ -8,10 +8,10 @@ This project is also partly based on this excellent
 by Adrian Rosebrock on [pyimagesearch](https://www.pyimagesearch.com), for the OpenCV-Caffe implementation of one of the models.
 
 Currently, this repository implements both the ECCV16 (Caffe and PyTorch) and the SIGGRAPH17 (PyTorch) models by Zhang et al. in one simple interface, and only in inference mode. Furthermore, GPUs are not yet
-supported by the code or dependencies, meaning that even if the relevant GPU drivers and libraries are installed, the inference will not yet utilize it. See [Roadmap](##-Roadmap) section.
+supported by the code or dependencies, meaning that even if the relevant GPU drivers and libraries are installed, the inference will not yet utilize it. See [Roadmap](#Roadmap) section.
 
-**Lebanon, Jounieh, circa 1894 - Colorized**
-![Lebanon, Jounieh, circa 1894 - Colorized](/outputs/jounieh_1894.jpg)
+**Lebanon, Achrafieh, circa 1910 - Colorized**
+![Lebanon, Achrafieh, circa 1910 - Colorized](/outputs/ashrafieh_1910.jpg)
 
 
 ## Quick Start
