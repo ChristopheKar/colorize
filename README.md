@@ -27,7 +27,7 @@ wget https://colorizers.s3.us-east-2.amazonaws.com/siggraph17-df00044c.pth -O we
 
 If all dependencies are installed, the example images can be colorized by running:
 ```bash
-python colorize_image.py -i images/ -o outputs/
+python colorize.py -i images/ -o outputs/
 ```
 
 ## Installation
@@ -89,6 +89,6 @@ By default, its entrypoint is the `colorize.py` script, so it can directly take 
 - [ ] Other colorizers?
 
 ## References
-- Colorful Image Colorization [paper](https://arxiv.org/abs/1603.08511) [code](https://richzhang.github.io/colorization/)
+- Colorful Image Colorization [[paper](https://arxiv.org/abs/1603.08511)] [[code](https://richzhang.github.io/colorization/)]
 - [Black and white image colorization with OpenCV and Deep Learning, PyImageSearch](https://pyimagesearch.com/2019/02/25/black-and-white-image-colorization-with-opencv-and-deep-learning/)
 - [Let there be color!](http://iizuka.cs.tsukuba.ac.jp/projects/colorization/en/)
