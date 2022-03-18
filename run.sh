@@ -2,6 +2,7 @@
 
 default_name="colorize"
 default_img="colorize"
+default_context="."
 
 # Parse arguments
 while [[ "$#" -gt 0 ]]; do
@@ -12,6 +13,7 @@ while [[ "$#" -gt 0 ]]; do
         -r|--as-root) root=1 ;;
         -n|--name) name="$2"; shift ;;
         -in|--img-name) imgname="$2"; shift ;;
+        -c|--build-context) context="$2"; shift ;;
         *) echo "Unknown parameter passed: $1"; exit 1 ;;
     esac
     shift
@@ -42,10 +44,16 @@ fi
 # Build image if --build is specified or if it does not exist locally
 if [[ "$build" -eq 1 || $(docker inspect "$imgname" > /dev/null 2>&1) ]]; then
     echo "Building image..."
-    docker build -t $imgname .
+
+    # Set build context
+    if [ -z ${context+x} ]; then
+        context=$default_context
+    fi
+
+    docker build -t $imgname "$context"
 fi
 
-# Set entrypoint
+# Set entrypoint as shell
 if [[ "$shell" -eq 1 ]]; then
     entrypoint="--entrypoint /bin/bash"
 fi
