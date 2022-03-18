@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 default_name="colorize"
 default_img="colorize"
