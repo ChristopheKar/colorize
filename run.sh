@@ -14,7 +14,7 @@ while [[ "$#" -gt 0 ]]; do
         -n|--name) name="$2"; shift ;;
         -in|--img-name) imgname="$2"; shift ;;
         -c|--build-context) context="$2"; shift ;;
-        *) echo "Unknown parameter passed: $1"; exit 1 ;;
+        *) args="$@"; break ;;
     esac
     shift
 done
@@ -28,6 +28,8 @@ if [[ "$help" -eq 1 ]]; then
     echo "  -n/--name NAME: specify container name, default is $default_name"
     echo "  -in/--img-name IMAGENAME: specify image name, default is $default_img"
     echo "  -r/--as-root: run container as root with uid 0 and gid 0, default is current user uid and gid"
+    echo "  -c/--build-context: context for building docker image, default is current directory"
+    echo "  All other arguments are passed to the container entrypoint if it is not the shell"
     exit 0
 fi
 
@@ -56,6 +58,7 @@ fi
 # Set entrypoint as shell
 if [[ "$shell" -eq 1 ]]; then
     entrypoint="--entrypoint /bin/bash"
+    args=""
 fi
 
 # Set container user id
@@ -74,4 +77,5 @@ docker run \
     --name $name \
     -v $PWD:/app \
     $entrypoint \
-    $imgname
+    $imgname \
+    $args
