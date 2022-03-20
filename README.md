@@ -48,7 +48,7 @@ or other. For example, using `pip`:
 pip install -r requirements.txt
 ```
 
-Currently, the dependencies do not include support for GPUs, and even if the proper
+The main dependencies are PyTorch and OpenCV, any recent version should do.
 
 ### Docker
 
@@ -60,10 +60,12 @@ docker build -t colorize .
 
 Then, using the built image is as simple as:
 ```bash
-docker run -it --rm --name colorize -v $PWD:/app colorize bash
+docker run -it --rm --name colorize -v $PWD:/app colorize -i images -o outputs
 ```
 
-This will drop you in an interactive bash session inside the Docker container.\
+This will run the Docker container and execute the `colorize.py` script with the given arguments.
+You can override this entrypoint by setting `--entrypoint /bin/bash` for an interactive bash
+session, for example.
 The `-v` option allows you to mount your current workspace to `/app`
 inside the container, so that your files are accessible from there, and so that any
 changes made to files under that path persists on your local storage. Any other changes
@@ -75,7 +77,8 @@ to the Docker image.
 
 The easiest way to use this repository with Docker is with the provided utility script, `run.sh`.
 First, make sure it is executable (`chmod +x run.sh`) and simply execute it (`./run.sh`).
-By default, its entrypoint is the `colorize.py` script, so it can directly take in the arguments for that script, for example
+By default, its entrypoint is the `colorize.py` script,
+so it can directly take in the arguments for that script, for example
 ```
 # Use ./run.sh --help to show usage details
 ./run.sh -i images/ -o outputs -m siggraph17
