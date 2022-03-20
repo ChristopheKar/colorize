@@ -44,7 +44,10 @@ if [ -z ${imgname+x} ]; then
 fi
 
 # Build image if --build is specified or if it does not exist locally
-if [[ "$build" -eq 1 || $(docker inspect "$imgname" > /dev/null 2>&1) ]]; then
+# Inspect image and check if exit code is 0
+docker inspect "$imgname" > /dev/null 2>&1
+status="$?"
+if [[ "$build" -eq 1 ]] || [[ "$status" != 0 ]]; then
     echo "Building image..."
 
     # Set build context
