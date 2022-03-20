@@ -127,7 +127,8 @@ class SIGGRAPH17Model(Base):
             nn.Tanh()
         )
 
-        self.upsample4 = nn.Sequential(nn.Upsample(scale_factor=4, mode='bilinear'))
+        self.upsample4 = nn.Sequential(nn.Upsample(
+            scale_factor=4, mode='bicubic', align_corners=False))
         self.softmax = nn.Sequential(nn.Softmax(dim=1))
 
         # Load pretrained state

@@ -118,7 +118,8 @@ class ECCV16Model(Base):
                 313, 2,
                 kernel_size=1, padding=0,
                 dilation=1, stride=1, bias=False)
-            self.upsample4 = nn.Upsample(scale_factor=4, mode='bilinear')
+            self.upsample4 = nn.Upsample(
+                scale_factor=4, mode='bicubic', align_corners=False)
 
             # Load pretrained state
             self._validate_keys(pretrained, 'model', argname='pretrained')
