@@ -9,29 +9,26 @@ from utils import save_image
 from models import ECCV16Model, SIGGRAPH17Model
 
 
-def colorize(image_in, output, model='siggraph17', caffe=False, recursive=True):
+def colorize(
+    image_in,
+    output,
+    model='siggraph17',
+    weights=None,
+    caffe=False,
+    recursive=True):
 
     target_size = (256, 256)
 
     # Load selected model and checkpoint
     if (model == 'eccv16'):
-
         # Only ECCV16 model has Caffe version
         if (caffe):
-            checkpoint = dict(
-                prototxt='weights/caffe/colorization_deploy_v2.prototxt',
-                points='weights/caffe/pts_in_hull.npy',
-                model='weights/caffe/colorization_release_v2.caffemodel'
-            )
             target_size = (224, 224)
-        else:
-            checkpoint = dict(model='weights/eccv16-9b330a0b.pth')
 
-        model = ECCV16Model(pretrained=checkpoint, caffe=caffe)
+        model = ECCV16Model(checkpoint=weights, caffe=caffe)
 
     elif (model == 'siggraph17'):
-        checkpoint = dict(model='weights/siggraph17-df00044c.pth')
-        model = SIGGRAPH17Model(pretrained=checkpoint)
+        model = SIGGRAPH17Model(checkpoint=weights)
 
     # Load dataset
     dataset = LabImages(
@@ -96,6 +93,14 @@ def parse_args():
             'Available models are ECCV16 and SIGGRAPH17.')
     )
     parser.add_argument(
+        '-w', '--weights',
+        type=str, required=False,
+        default=True,
+    	help=(
+            'Path to model weights, if not specified, '
+            'model uses default weights from model zoo.')
+    )
+    parser.add_argument(
         '--caffe',
         action='store_true', required=False,
     	help='Use Caffe version for ECCV16 model.')
@@ -110,5 +115,7 @@ if __name__ == '__main__':
     args = parse_args()
     colorize(
         args.input, args.output,
-        model=args.model, caffe=args.caffe,
+        model=args.model,
+        weights=args.weights,
+        caffe=args.caffe,
         recursive=args.recursive)

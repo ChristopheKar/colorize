@@ -15,7 +15,7 @@ supported by the code or dependencies, meaning that even if the relevant GPU dri
 
 
 ## Quick Start
-The main weights file can be retrieved using:
+The weights for the different models can be retrieved using:
 ```bash
 # ECCV16 Caffe model
 wget http://eecs.berkeley.edu/~rich.zhang/projects/2016_colorization/files/demo_v2/colorization_release_v2.caffemodel -O weights/caffe/colorization_release_v2.caffemodel
@@ -29,6 +29,8 @@ If all dependencies are installed, the example images can be colorized by runnin
 ```bash
 python colorize.py -i images/ -o outputs/
 ```
+By default, this will use the Zhang et. al. SIGGRAPH-17 model and look for the weights under
+`weights/siggraph17-df00044c.pth`.
 
 ## Installation
 

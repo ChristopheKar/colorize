@@ -7,9 +7,51 @@ from .base import Base
 
 class SIGGRAPH17Model(Base):
 
-    def __init__(self, norm_layer=nn.BatchNorm2d, classes=529, pretrained=None):
+    def __init__(self, norm_layer=nn.BatchNorm2d, classes=529, checkpoint=None):
         super().__init__()
 
+        # Set default model path
+        checkpoint_path = (
+            'https://colorizers.s3.us-east-2.amazonaws.com/'
+            'siggraph17-df00044c.pth')
+
+        # Set model checkpoint
+        if (not checkpoint):
+            raise NotImplementedError((
+                'Training is not yet supported, `checkpoint` must be '
+                'True (bool) for default checkpoint or '
+                'a path (str) to a weights file.'
+            ))
+        else:
+            warn = False
+            if (isinstance(checkpoint, str)) and (os.path.isfile(checkpoint)):
+                self.checkpoint = checkpoint
+                warn = True
+            else:
+                if (warn):
+                    warnings.warn(
+                        f'Provided checkpoint at {checkpoint} was not found.'
+                        f'Resorting to default checkpoint at {checkpoint_path}')
+
+                self.checkpoint = checkpoint_path
+
+        # Build model
+        self._build_torch_model(norm_layer=norm_layer, classes=classes)
+
+        # Load pretrained state
+        if (self.checkpoint.startswith('http')):
+            self.pretrained_state = model_zoo.load_url(
+                self.checkpoint, map_location='cpu', check_hash=True,
+                model_dir='weights', file_name='siggraph17-df00044c.pth')
+        else:
+            self.pretrained_state = torch.load(self.checkpoint)
+
+        self.load_state_dict(self.pretrained_state)
+        self.eval()
+
+
+    def _build_torch_model(self, norm_layer=nn.BatchNorm2d, classes=529):
+        """Initialize torch model layers."""
         # Conv1
         self.model1 = nn.Sequential(
             nn.Conv2d(4, 64, kernel_size=3, stride=1, padding=1, bias=True),
@@ -131,17 +173,6 @@ class SIGGRAPH17Model(Base):
             scale_factor=4, mode='bicubic', align_corners=False))
         self.softmax = nn.Sequential(nn.Softmax(dim=1))
 
-        # Load pretrained state
-        self._validate_keys(pretrained, 'model', argname='pretrained')
-        if (pretrained['model'].startswith('http')):
-            self.pretrained_state = model_zoo.load_url(
-                pretrained['model'], map_location='cpu', check_hash=True)
-        else:
-            self.pretrained_state = torch.load(pretrained['model'])
-
-        self.load_state_dict(self.pretrained_state)
-        self.eval()
-
 
     def forward(self, input_A, input_B=None, mask_B=None):
         if (input_B is None):
@@ -175,10 +206,3 @@ class SIGGRAPH17Model(Base):
         out_reg = self.model_out(conv10_2)
 
         return self.denormalize_ab(out_reg)
-
-
-if __name__ == '__main__':
-    # Checkpoint available at
-    # https://colorizers.s3.us-east-2.amazonaws.com/siggraph17-df00044c.pth
-    checkpoint = dict(model='weights/siggraph17-df00044c.pth')
-    model = SIGGRAPH17Model(pretrained=checkpoint)
