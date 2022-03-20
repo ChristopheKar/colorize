@@ -81,15 +81,24 @@ By default, its entrypoint is the `colorize.py` script,
 so it can directly take in the arguments for that script, for example
 ```
 # Use ./run.sh --help to show usage details
+
+# Build image for GPU
+./run.sh --shell --build --gpus all
+
+# Colorize images
 ./run.sh -i images/ -o outputs -m siggraph17
+
+# Colorize images on GPU
+./run.sh --gpus all -i images/ -o outputs -m siggraph17
+
 ```
 
 ## Roadmap
 
 - [x] Zhang et al. ECCV16 Caffe model
-- [x] Zhang et al. ECCV16 PyTorch model
-- [x] Zhang et al. SIGGRAPH17 PyTorch model
-- [ ] GPU Support
+- [x] Zhang et al. ECCV16 PyTorch model (13/03/2022)
+- [x] Zhang et al. SIGGRAPH17 PyTorch model (13/03/2022)
+- [x] GPU Support (20/03/2022)
 - [ ] Training support
 - [ ] Other colorizers?
 

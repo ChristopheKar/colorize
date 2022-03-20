@@ -50,23 +50,29 @@ def colorize(
     # Load dataset
     dataset = LabImages(
         image_in, recursive=recursive, target_size=target_size)
-    loader = DataLoader(dataset, batch_size=1, shuffle=False)
+    loader = DataLoader(
+        dataset, batch_size=1, shuffle=False, pin_memory=(device == 'cuda'))
+
+    # Load model on device
+    model.to(device)
+    model.eval()
 
     for idx, batch in enumerate(loader):
         print(f'Processing image {idx+1}/{len(loader)}', end='\r')
-
         with torch.no_grad():
+            image_l = batch['resized_l'].to(device)
             # Forward pass
-            batch['pred_ab'] = model.forward(batch['resized_l'])
+            batch['pred_ab'] = model.forward(image_l)
             # Post-process predicted images and save output
             batch = zip(
                 batch['image_path'], batch['original_l'], batch['pred_ab'])
             for img_path, image_l, image_ab in batch:
-                image = dataset.output_transform(image_l, image_ab)
+                image = dataset.output_transform(
+                    image_l.to(device), image_ab)
                 output_path = get_output_path(img_path, output)
                 save_image(image, output_path)
 
-    print(f'\nSaved images in {os.path.dirname(output_path)}/.')
+    print(f'\nSaved images in {os.path.dirname(output_path)}/')
 
 
 def get_output_path(img_path, output_path):

@@ -261,7 +261,7 @@ class ToNumpy:
     """Convert image from `torch.Tensor` to `numpy.ndarray`."""
 
     def __call__(self, image):
-        return image.data.squeeze().numpy().transpose((1, 2, 0))
+        return image.data.squeeze().cpu().numpy().transpose((1, 2, 0))
 
 
 class ToImage:
@@ -273,4 +273,3 @@ class ToImage:
             return (np.clip(image, 0, 1)*255).astype('uint8')
         else:
             return image
-

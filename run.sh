@@ -11,9 +11,11 @@ while [[ "$#" -gt 0 ]]; do
         -s|--shell) shell=1 ;;
         -b|--build) build=1 ;;
         -r|--as-root) root=1 ;;
+        -g|--gpus) gpu_enabled=1; gpus="$2"; shift ;;
         -n|--name) name="$2"; shift ;;
         -in|--img-name) imgname="$2"; shift ;;
         -c|--build-context) context="$2"; shift ;;
+        --base-image) base_image="$2"; shift ;;
         *) args="$@"; break ;;
     esac
     shift
@@ -29,6 +31,8 @@ if [[ "$help" -eq 1 ]]; then
     echo "  -in/--img-name IMAGENAME: specify image name, default is $default_img"
     echo "  -r/--as-root: run container as root with uid 0 and gid 0, default is current user uid and gid"
     echo "  -c/--build-context: context for building docker image, default is current directory"
+    echo "  -g/--gpus: gpu devices to map to Docker container, also used to determine Docker image"
+    echo "  --base-image: base image to use to build Docker image, overrides default which depends on -g/--gpus being specified"
     echo "  All other arguments are passed to the container entrypoint if it is not the shell"
     exit 0
 fi
@@ -55,7 +59,22 @@ if [[ "$build" -eq 1 ]] || [[ "$status" != 0 ]]; then
         context=$default_context
     fi
 
-    docker build -t $imgname "$context"
+    # Set base image based on gpu
+    if [[ "$gpu_enabled" -eq 1 ]]; then
+      build_args="--build-arg BASE_IMAGE=pytorch/pytorch:1.11.0-cuda11.3-cudnn8-devel"
+    else
+      build_args="--build-arg BASE_IMAGE=python:3.9-slim-buster"
+    fi
+
+    # Override default base image if specified
+    if [ ! -z ${base_image+x} ]; then
+        build_args="--build-arg BASE_IMAGE="$base_image""
+    fi
+
+    echo "$build_args"
+
+    # Build image
+    docker build -t $imgname $build_args "$context"
 fi
 
 # Set entrypoint as shell
@@ -73,12 +92,27 @@ else
     gid=$(id -g)
 fi
 
+# Set gpu args
+if [[ "$gpu_enabled" -eq 1 ]]; then
+  if [ -z $gpus ]; then
+      gpu_args="--gpus all"
+  else
+      gpu_args="--gpus "$gpus""
+  fi
+
+else
+  gpu_args=""
+fi
+
+echo "$gpu_args"
+
 # Run container
 docker run \
     -it --rm \
     --user $uid:$gid \
     --name $name \
     -v $PWD:/app \
+    $gpu_args \
     $entrypoint \
     $imgname \
     $args
