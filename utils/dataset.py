@@ -6,13 +6,8 @@ from . import transforms
 
 class LabImages(Dataset):
 
-    def __init__(
-        self, image_in,
-        recursive=True,
-        target_size=(256, 256),
-        caffe=False):
+    def __init__(self, image_in, recursive=True, target_size=(256, 256)):
 
-        self.caffe = caffe
         self.allowed_exts = ('jpeg', 'jpg', 'png')
         self.image_in = image_in
         self.image_paths = []
