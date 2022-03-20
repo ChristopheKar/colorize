@@ -6,27 +6,11 @@ from torch.utils.data import DataLoader
 
 from utils import LabImages
 from utils import save_image
-from models import ZhangECCV16, ZhangSIGGRAPH17
+from models import AVAILABLE_MODELS
 
 
-available_models = {
-    'zhang-eccv16-caffe': {
-        'model': ZhangECCV16,
-        'kwargs': {
-            'caffe': True
-        }
-    },
-    'zhang-eccv16': {
-        'model': ZhangECCV16,
-        'kwargs': {
-            'caffe': False
-        }
-    },
-    'zhang-siggraph17': {
-        'model': ZhangSIGGRAPH17,
-        'kwargs': {}
-    }
-}
+device = ('cuda' if torch.cuda.is_available() else 'cpu')
+
 
 def colorize(
     image_in,
@@ -37,9 +21,9 @@ def colorize(
 
     target_size = (256, 256)
 
-    if (model_name in available_models):
-        model = available_models[model_name]['model']
-        kwargs = available_models[model_name]['kwargs']
+    if (model_name in AVAILABLE_MODELS):
+        model = AVAILABLE_MODELS[model_name]['model']
+        kwargs = AVAILABLE_MODELS[model_name]['kwargs']
         kwargs['checkpoint'] = weights
         model = model(**kwargs)
     else:
