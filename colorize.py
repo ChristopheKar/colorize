@@ -31,7 +31,7 @@ available_models = {
 def colorize(
     image_in,
     output,
-    model_name='siggraph17',
+    model_name='zhang-siggraph17',
     weights=None,
     recursive=True):
 
@@ -104,7 +104,7 @@ def parse_args():
     parser.add_argument(
         '-m', '--model',
         type=str, required=False,
-        default='siggraph17',
+        default='zhang-siggraph17',
     	help=(
             'Model to use for colorization. Available models are '
             '{"zhang-siggraph17", "zhang-eccv16", "zhang-eccv16-caffe"}')
