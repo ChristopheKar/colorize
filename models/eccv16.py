@@ -18,7 +18,7 @@ class ECCV16Model(Base):
         self.caffe = caffe
         if (self.caffe):
             # Set caffe model file paths
-            weights_dir = 'weights/caffe'
+            weights_dir = 'weights/zhang_eccv16/caffe'
             prototxt_path = os.path.join(
                 weights_dir, 'colorization_deploy_v2.prototxt')
             points_path = os.path.join(
@@ -63,7 +63,7 @@ class ECCV16Model(Base):
             if (self.checkpoint.startswith('http')):
                 self.pretrained_state = model_zoo.load_url(
                     self.checkpoint, map_location='cpu', check_hash=True,
-                    model_dir='weights',
+                    model_dir='weights/zhang_eccv16',
                     file_name='zhang-eccv16-9b330a0b.pth')
             else:
                 self.pretrained_state = torch.load(self.checkpoint)

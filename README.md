@@ -18,11 +18,11 @@ supported by the code or dependencies, meaning that even if the relevant GPU dri
 The weights for the different models can be retrieved using:
 ```bash
 # ECCV16 Caffe model
-wget http://eecs.berkeley.edu/~rich.zhang/projects/2016_colorization/files/demo_v2/colorization_release_v2.caffemodel -O weights/caffe/colorization_release_v2.caffemodel
+wget http://eecs.berkeley.edu/~rich.zhang/projects/2016_colorization/files/demo_v2/colorization_release_v2.caffemodel -O weights/zhang_eccv16/caffe/colorization_release_v2.caffemodel
 # ECCV16 PyTorch model
-wget https://colorizers.s3.us-east-2.amazonaws.com/colorization_release_v2-9b330a0b.pth -O weights/eccv16-9b330a0b.pth
+wget https://colorizers.s3.us-east-2.amazonaws.com/colorization_release_v2-9b330a0b.pth -O weights/zhang_eccv16/zhang-eccv16-9b330a0b.pth
 # SIGGRAPH17 PyTorch model
-wget https://colorizers.s3.us-east-2.amazonaws.com/siggraph17-df00044c.pth -O weights/siggraph17-df00044c.pth
+wget https://colorizers.s3.us-east-2.amazonaws.com/siggraph17-df00044c.pth -O weights/zhang-siggraph17-df00044c.pth
 ```
 
 If all dependencies are installed, the example images can be colorized by running:
@@ -30,7 +30,7 @@ If all dependencies are installed, the example images can be colorized by runnin
 python colorize.py -i images/ -o outputs/
 ```
 By default, this will use the Zhang et. al. SIGGRAPH-17 model and look for the weights under
-`weights/siggraph17-df00044c.pth`.
+`weights/zhang-siggraph17-df00044c.pth`.
 
 ## Installation
 
