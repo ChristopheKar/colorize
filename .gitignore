@@ -5,10 +5,10 @@ __pycache__
 # Ignore model weights file
 weights/*
 
-# Don't ignore Caffe files
-!weights/zhang_eccv16/caffe
-weights/caffe/*.caffemodel
-
+# Don't ignore license and Caffe secondary model files
+!weights/zhang_eccv16
+weights/zhang_eccv16/caffe/*.caffemodel
+weights/zhang_eccv16/*.pth
 
 # Ignore data
 images/
