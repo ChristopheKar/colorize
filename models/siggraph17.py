@@ -42,7 +42,7 @@ class SIGGRAPH17Model(Base):
         if (self.checkpoint.startswith('http')):
             self.pretrained_state = model_zoo.load_url(
                 self.checkpoint, map_location='cpu', check_hash=True,
-                model_dir='weights', file_name='siggraph17-df00044c.pth')
+                model_dir='weights', file_name='zhang-siggraph17-df00044c.pth')
         else:
             self.pretrained_state = torch.load(self.checkpoint)
 
