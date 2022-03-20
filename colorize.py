@@ -49,9 +49,23 @@ def colorize(image_in, output, model='siggraph17', caffe=False, recursive=True):
                 batch['image_path'], batch['original_l'], batch['pred_ab'])
             for img_path, image_l, image_ab in batch:
                 image = dataset.output_transform(image_l, image_ab)
-                filepath = os.path.join(output, img_path.split('/')[-1])
-                save_image(image, filepath)
-    print()
+                output_path = get_output_path(img_path, output)
+                save_image(image, output_path)
+
+    print(f'\nSaved images in `{os.path.dirname(output_path)}/`.')
+
+
+def get_output_path(img_path, output_path):
+
+    img_name = img_path.split('/')[-1]
+    img_ext = img_name.rsplit('.', 1)[-1]
+    if (output_path is not None):
+        filepath = os.path.join(output_path, img_name)
+        os.makedirs(output_path, exist_ok=True)
+    else:
+        filepath = img_path.replace(f'.{img_ext}', f'_colorized.{img_ext}')
+
+    return filepath
 
 
 def parse_args():
