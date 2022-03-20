@@ -2,10 +2,10 @@ import torch
 from torch import nn
 from torch.utils import model_zoo
 
-from .base import Base
+from .base import ZhangBase
 
 
-class SIGGRAPH17Model(Base):
+class ZhangSIGGRAPH17(ZhangBase):
 
     def __init__(self, norm_layer=nn.BatchNorm2d, classes=529, checkpoint=None):
         super().__init__()

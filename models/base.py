@@ -1,7 +1,7 @@
 from torch.nn import Module
 
 
-class Base(Module):
+class ZhangBase(Module):
     """Base model class containing channel normalization methods."""
 
     def __init__(self):

@@ -7,10 +7,10 @@ import torch
 from torch import nn
 from torch.utils import model_zoo
 
-from .base import Base
+from .base import ZhangBase
 
 
-class ECCV16Model(Base):
+class ZhangECCV16(ZhangBase):
 
     def __init__(self, norm_layer=nn.BatchNorm2d, checkpoint=None, caffe=False):
         super().__init__()

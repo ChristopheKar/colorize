@@ -6,33 +6,50 @@ from torch.utils.data import DataLoader
 
 from utils import LabImages
 from utils import save_image
-from models import ECCV16Model, SIGGRAPH17Model
+from models import ZhangECCV16, ZhangSIGGRAPH17
 
+
+available_models = {
+    'zhang-eccv16-caffe': {
+        'model': ZhangECCV16,
+        'kwargs': {
+            'caffe': True
+        }
+    },
+    'zhang-eccv16': {
+        'model': ZhangECCV16,
+        'kwargs': {
+            'caffe': False
+        }
+    },
+    'zhang-siggraph17': {
+        'model': ZhangSIGGRAPH17,
+        'kwargs': {}
+    }
+}
 
 def colorize(
     image_in,
     output,
-    model='siggraph17',
+    model_name='siggraph17',
     weights=None,
-    caffe=False,
     recursive=True):
 
     target_size = (256, 256)
 
-    # Load selected model and checkpoint
-    if (model == 'eccv16'):
-        # Only ECCV16 model has Caffe version
-        if (caffe):
-            target_size = (224, 224)
-
-        model = ECCV16Model(checkpoint=weights, caffe=caffe)
-
-    elif (model == 'siggraph17'):
-        model = SIGGRAPH17Model(checkpoint=weights)
+    if (model_name in available_models):
+        model = available_models[model_name]['model']
+        kwargs = available_models[model_name]['kwargs']
+        kwargs['checkpoint'] = weights
+        model = model(**kwargs)
+    else:
+        raise ValueError(
+            f'Model {model_name} is not supported.\n'
+            f'Available models: {", ".join(available_models.keys())}')
 
     # Load dataset
     dataset = LabImages(
-        image_in, recursive=recursive, target_size=target_size, caffe=caffe)
+        image_in, recursive=recursive, target_size=target_size)
     loader = DataLoader(dataset, batch_size=1, shuffle=False)
 
     for idx, batch in enumerate(loader):
@@ -49,7 +66,7 @@ def colorize(
                 output_path = get_output_path(img_path, output)
                 save_image(image, output_path)
 
-    print(f'\nSaved images in `{os.path.dirname(output_path)}/`.')
+    print(f'\nSaved images in {os.path.dirname(output_path)}/.')
 
 
 def get_output_path(img_path, output_path):
@@ -89,8 +106,8 @@ def parse_args():
         type=str, required=False,
         default='siggraph17',
     	help=(
-            'Model to use for colorization. '
-            'Available models are ECCV16 and SIGGRAPH17.')
+            'Model to use for colorization. Available models are '
+            '{"zhang-siggraph17", "zhang-eccv16", "zhang-eccv16-caffe"}')
     )
     parser.add_argument(
         '-w', '--weights',
@@ -100,10 +117,6 @@ def parse_args():
             'Path to model weights, if not specified, '
             'model uses default weights from model zoo.')
     )
-    parser.add_argument(
-        '--caffe',
-        action='store_true', required=False,
-    	help='Use Caffe version for ECCV16 model.')
 
     args = parser.parse_args()
 
@@ -115,7 +128,6 @@ if __name__ == '__main__':
     args = parse_args()
     colorize(
         args.input, args.output,
-        model=args.model,
+        model_name=args.model,
         weights=args.weights,
-        caffe=args.caffe,
         recursive=args.recursive)
